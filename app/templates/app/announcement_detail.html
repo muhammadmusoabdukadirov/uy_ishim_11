@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container my-4">
+    <h2>{{ announcement.name }}</h2>
+    <h5>Muallif: {{ announcement.author.title }}</h5>
+    {% if announcement.image %}
+        <img src="{{ announcement.image.url }}" alt="{{ announcement.name }}" class="img-fluid">
+        <div class='container'><br>
+            <h4 class="card-title">{{ announcement.name }}</h4>
+            <h6 class="card-title">{{ announcement.author }}</h6>
+        </div>
+    {% endif %}
+    <p>{{ announcement.description }}</p>
+    <small>Qo‘yilgan vaqti: {{ announcement.create_at|date:"d/m/Y H:i" }}</small>
+    <div class="mt-4">
+        <a href="{% url 'index' %}" class="btn btn-primary">Asosiy saxifaga qaytish</a>
+    </div>
+</div>
+{% endblock %}

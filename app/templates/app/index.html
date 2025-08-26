@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="container my-4">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for announcement in announcements %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        {% if announcement.image %}
+            <a href="{% url 'announcement_detail' announcement.pk %}" target="_blank">
+                <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.name }}">
+                <div class='container'><br>
+                    <h4 class="card-title">{{ announcement.name }}</h4>
+                    <h6 class="card-title">{{ announcement.author }}</h6>
+                </div>
+            </a>
+        {% else %}
+          <img src="{% static 'img/no_image.jpg' %}" class="card-img-top" alt="default image">
+        {% endif %}
+        
+        <div class="card-body">
+          <p class="card-text">{{ announcement.description|truncatewords:15 }}</p>
+          <h7 class="card-title">Ko`rilganlar soni: {{ announcement.views }}</h7>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">
+            E'lon qilingan sana: {{ announcement.create_at|date:"d/m/Y H:i" }}
+          </small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock main %}
