@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import NewsForm
+from django.core.exceptions import PermissionDenied
 from .models import Advertisement, Announcement, Comment
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
@@ -37,6 +38,9 @@ def announcement_detail(request, pk):
 
 
 def add_app(request: HttpRequest):
+    if not request.user.is_staff:
+        raise PermissionDenied
+    
     if request.method == 'POST':
         if request.user.is_staff:
             form = NewsForm(data=request.POST, files=request.FILES)
@@ -54,6 +58,9 @@ def add_app(request: HttpRequest):
 
 
 def update_app(request, pk: int):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
     app = get_object_or_404(Announcement, pk=pk)  # Advertisement emas, Announcement bo'lishi kerak
     if request.method == "POST":
         form = NewsForm(data=request.POST, files=request.FILES, instance=app)
@@ -68,3 +75,12 @@ def update_app(request, pk: int):
         "title": "Maqola Yangilash"
     }
     return render(request, "app/add_app.html", context)
+
+def delete_app(request, pk):
+    if not request.user.is_staff:
+        raise PermissionDenied
+    announcement = get_object_or_404(Announcement, pk=pk)
+    if request.method == "POST":
+        announcement.delete()
+        return redirect("index")
+    return redirect("index")

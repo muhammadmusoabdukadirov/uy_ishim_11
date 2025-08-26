@@ -1,6 +1,7 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+
     <button type="submit" class="btn btn-primary mt-3">
         {% if '/update/' in request.path %}
             Update
@@ -8,5 +9,14 @@
             Save
         {% endif %}
     </button>
-</form>
 
+    {% if form.instance.pk %}
+    <!-- O'chirish tugmasi faqat mavjud e'lonlar uchun chiqadi -->
+        <form action="{% url 'delete_app' form.instance.pk %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Rostdan o‘chirmoqchimisiz?');">
+                O‘chirish
+            </button>
+        </form>
+    {% endif %}
+</form>

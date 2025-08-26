@@ -10,26 +10,29 @@
         {% if announcement.image %}
           <a href="{% url 'announcement_detail' announcement.pk %}" target="_blank">
             <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.name }}">
-            <div class="container mt-2">
-              <h4 class="card-title">{{ announcement.name }}</h4>
-              <h6 class="card-subtitle text-muted">{{ announcement.author }}</h6>
-            </div>
           </a>
         {% else %}
           <img src="{% static 'img/no_image.jpg' %}" class="card-img-top" alt="default image">
         {% endif %}
-        
+
         <div class="card-body">
-          <h5 class="card-title">{{ announcement.name }}</h5>
+          <h4 class="card-title">{{ announcement.name }}</h4>
+          <h6 class="card-subtitle text-muted">{{ announcement.author }}</h6>
           <p class="card-text">{{ announcement.description|truncatewords:15 }}</p>
 
           {% if request.user.is_authenticated and request.user.is_staff %}
             <a href="{% url 'update_announcement' announcement.pk %}" class="btn btn-warning btn-sm mb-2">
-                O‘zgartirish
+              O‘zgartirish
             </a>
+            <form action="{% url 'delete_app' announcement.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Rostdan o‘chirmoqchimisiz?');">
+                    O‘chirish
+                </button>
+            </form>
           {% endif %}
 
-          <small class="text-muted">Ko`rilganlar soni: {{ announcement.views }}</small>
+          <small class="text-muted d-block mt-2">Ko‘rilganlar soni: {{ announcement.views }}</small>
         </div>
 
         <div class="card-footer">
