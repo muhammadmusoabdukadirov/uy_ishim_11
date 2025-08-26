@@ -8,21 +8,30 @@
     <div class="col">
       <div class="card h-100 shadow-sm">
         {% if announcement.image %}
-            <a href="{% url 'announcement_detail' announcement.pk %}" target="_blank">
-                <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.name }}">
-                <div class='container'><br>
-                    <h4 class="card-title">{{ announcement.name }}</h4>
-                    <h6 class="card-title">{{ announcement.author }}</h6>
-                </div>
-            </a>
+          <a href="{% url 'announcement_detail' announcement.pk %}" target="_blank">
+            <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.name }}">
+            <div class="container mt-2">
+              <h4 class="card-title">{{ announcement.name }}</h4>
+              <h6 class="card-subtitle text-muted">{{ announcement.author }}</h6>
+            </div>
+          </a>
         {% else %}
           <img src="{% static 'img/no_image.jpg' %}" class="card-img-top" alt="default image">
         {% endif %}
         
         <div class="card-body">
+          <h5 class="card-title">{{ announcement.name }}</h5>
           <p class="card-text">{{ announcement.description|truncatewords:15 }}</p>
-          <h7 class="card-title">Ko`rilganlar soni: {{ announcement.views }}</h7>
+
+          {% if request.user.is_authenticated and request.user.is_staff %}
+            <a href="{% url 'update_announcement' announcement.pk %}" class="btn btn-warning btn-sm mb-2">
+                O‘zgartirish
+            </a>
+          {% endif %}
+
+          <small class="text-muted">Ko`rilganlar soni: {{ announcement.views }}</small>
         </div>
+
         <div class="card-footer">
           <small class="text-muted">
             E'lon qilingan sana: {{ announcement.create_at|date:"d/m/Y H:i" }}
