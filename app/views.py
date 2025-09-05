@@ -61,7 +61,7 @@ def update_app(request, pk: int):
     if not request.user.is_staff:
         raise PermissionDenied
 
-    app = get_object_or_404(Announcement, pk=pk)  # Advertisement emas, Announcement bo'lishi kerak
+    app = get_object_or_404(Announcement, pk=pk) 
     if request.method == "POST":
         form = NewsForm(data=request.POST, files=request.FILES, instance=app)
         if form.is_valid():

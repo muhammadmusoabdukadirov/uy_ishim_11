@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Advertisement, Announcement, Comment
 
 
-# Advertisement (Reklama) admin
 @admin.register(Advertisement)
 class AdminAdvertisement(admin.ModelAdmin):
     list_display = ("title",)
@@ -12,8 +11,8 @@ class AdminAdvertisement(admin.ModelAdmin):
 
 class CommentInline(admin.TabularInline):
     model = Comment
-    extra = 0  # bo‘sh joy chiqmasin
-    readonly_fields = ("user", "created")  # o‘zgartirib bo‘lmaydi
+    extra = 0
+    readonly_fields = ("user", "created") 
 
 
 @admin.register(Announcement)
@@ -24,7 +23,7 @@ class AdminAnnouncement(admin.ModelAdmin):
     list_filter = ("published", "author")
     search_fields = ("name", "description")
     readonly_fields = ("views", "create_at", "update_at")
-    inlines = [CommentInline]  # izohlarni ichida ko‘rsatadi
+    inlines = [CommentInline]
 
     def announcement_image(self, obj):
         if obj.image:

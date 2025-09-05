@@ -4,13 +4,13 @@ from .models import Announcement
 class NewsForm(forms.ModelForm):
     class Meta:
         model = Announcement
-        exclude = ['views', 'create_at', 'update_at']  # foydalanuvchi ko'rmaydigan maydonlar
+        exclude = ['views', 'create_at', 'update_at']
         labels = {
             "name": "Maqola nomi",
             "description": "Maqola tavsifi",
             "image": "Rasm yuklash",
             "video": "Video yuklash",
-            "author": "Bo‘limni tanlang",
+            "author": "Bo'limni tanlang",
             "published": "Saytga chiqarilsinmi?"
         }
         widgets = {

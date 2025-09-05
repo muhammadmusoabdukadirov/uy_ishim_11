@@ -1,19 +1,173 @@
-{% extends 'base.html' %}
-{% block main %}
-<div class="container my-4">
-    <h2>{{ announcement.name }}</h2>
-    <h5>Muallif: {{ announcement.author.title }}</h5>
-    {% if announcement.image %}
-        <img src="{{ announcement.image.url }}" alt="{{ announcement.name }}" class="img-fluid">
-        <div class='container'><br>
-            <h4 class="card-title">{{ announcement.name }}</h4>
-            <h6 class="card-title">{{ announcement.author }}</h6>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ announcement.name }} - E'lonlar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .announcement-card {
+            border-radius: 15px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .announcement-card:hover {
+            transform: translateY(-5px);
+        }
+        .announcement-image {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .author-badge {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .description-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #6c5ce7;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .back-button {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .time-badge {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        .social-share {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+        .facebook { background-color: #3b5998; }
+        .telegram { background-color: #0088cc; }
+        .twitter { background-color: #1da1f2; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-bullhorn me-2"></i>E'lonlar Portali
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home me-1"></i> Bosh Sahifa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-info-circle me-1"></i> Biz Haqimizda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-phone me-1"></i> Aloqa</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    {% endif %}
-    <p>{{ announcement.description }}</p>
-    <small>Qo‘yilgan vaqti: {{ announcement.create_at|date:"d/m/Y H:i" }}</small>
-    <div class="mt-4">
-        <a href="{% url 'index' %}" class="btn btn-primary">Asosiy saxifaga qaytish</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="announcement-card bg-white">
+                    <!-- E'lon rasmi -->
+                    {% if announcement.image %}
+                    <img src="{{ announcement.image.url }}" alt="{{ announcement.name }}" class="announcement-image">
+                    {% endif %}
+                    
+                    <div class="p-4 p-md-5">
+                        <!-- Sarlavha va muallif -->
+                        <h1 class="mb-3">{{ announcement.name }}</h1>
+                        <div class="author-badge">
+                            <i class="fas fa-user me-2"></i>Muallif: {{ announcement.author.title }}
+                        </div>
+                        
+                        <!-- Tavsif -->
+                        <div class="description-box">
+                            <p class="mb-0">{{ announcement.description }}</p>
+                        </div>
+                        
+                        <!-- Vaqt va social media -->
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="time-badge">
+                                <i class="far fa-clock me-1"></i> {{ announcement.create_at|date:"d/m/Y H:i" }}
+                            </div>
+                            
+                            <div class="social-share">
+                                <span class="me-2">Ulashish:</span>
+                                <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="social-icon telegram"><i class="fab fa-telegram-plane"></i></a>
+                                <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        
+                        <!-- Asosiy sahifaga qaytish tugmasi -->
+                        <div class="mt-5 text-center">
+                            <a href="{% url 'index' %}" class="btn back-button text-white">
+                                <i class="fas fa-arrow-left me-2"></i>Asosiy Sahifaga Qaytish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2023 E'lonlar Portali. Barcha huquqlar himoyalangan.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#" class="text-white"><i class="fab fa-telegram fa-lg"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
